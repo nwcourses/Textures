@@ -57,6 +57,8 @@ public class OpenGLView extends GLSurfaceView implements GLSurfaceView.Renderer 
             GLES20.glTexParameteri(GL_TEXTURE_EXTERNAL_OES,GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_NEAREST);
             GLES20.glTexParameteri(GL_TEXTURE_EXTERNAL_OES,GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_NEAREST);
 
+            cameraFeedSurfaceTexture = new SurfaceTexture(textureId[0]);
+
             // Must negate y when calculating texcoords from vertex coords as bitmap image data assumes
             // y increases downwards
             final String texVertexShader =
@@ -79,7 +81,7 @@ public class OpenGLView extends GLSurfaceView implements GLSurfaceView.Renderer 
             textureInterface = new GPUInterface(texVertexShader, texFragmentShader);
             GPUInterface.setupTexture(textureId[0]);
             textureInterface.setUniform1i("uTexture", 0); // this is the on-gpu texture register not the texture id
-            cameraFeedSurfaceTexture = new SurfaceTexture(textureId[0]);
+
             cameraCapturer = new CameraCapturer();
             onResume();
         }
