@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" android:orientation="vertical">
+
+    <LinearLayout android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:orientation="horizontal">
+        <Button android:layout_weight="1" android:id="@+id/mx"
+            android:text="-x" android:layout_height="wrap_content"
+            android:layout_width="0px"/>
+        <Button android:layout_weight="1" android:id="@+id/px"
+            android:text="+x" android:layout_height="wrap_content"
+            android:layout_width="0px"/>
+        <Button android:layout_weight="1" android:id="@+id/my"
+            android:text="-y" android:layout_height="wrap_content"
+            android:layout_width="0px"/>
+        <Button android:layout_weight="1" android:id="@+id/py"
+            android:text="+y" android:layout_height="wrap_content"
+            android:layout_width="0px"/>
+        <Button android:layout_weight="1" android:id="@+id/mz"
+            android:text="-z" android:layout_height="wrap_content"
+            android:layout_width="0px"/>
+        <Button android:layout_weight="1" android:id="@+id/pz"
+            android:text="+z" android:layout_height="wrap_content"
+            android:layout_width="0px"/>
+        <Button android:layout_weight="1" android:id="@+id/ac"
+            android:text="&lt;" android:layout_height="wrap_content"
+            android:layout_width="0px"/>
+        <Button android:layout_weight="1" android:id="@+id/cw"
+            android:text="&gt;" android:layout_height="wrap_content"
+            android:layout_width="0px"/>
+
+    </LinearLayout>
+
+    <LinearLayout android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:orientation="horizontal">
+    <Button  android:id="@+id/fw"
+        android:text="FORWARD!" android:layout_height="wrap_content"
+        android:layout_width="0px" android:layout_weight="1"/>
+        <Button  android:id="@+id/bk"
+            android:text="BACK!" android:layout_height="wrap_content"
+            android:layout_width="0px" android:layout_weight="1"/>
+    </LinearLayout>
+    <com.chatchat.textures.OpenGLView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/openglview"/>
+
+</LinearLayout>
