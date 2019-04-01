@@ -28,9 +28,13 @@ public class OpenGLView extends GLSurfaceView implements GLSurfaceView.Renderer 
     GPUInterface textureInterface;
     FloatBuffer vbuf;
     SurfaceTexture cameraFeedSurfaceTexture;
-    CameraCapturer cameraCapturer;
     ShortBuffer ibuf;
+    SurfaceTextureHandler surfaceTextureHandler;
 
+
+    public interface SurfaceTextureHandler {
+        public void receiveSurfaceTexture(SurfaceTexture st);
+    }
 
     public OpenGLView (Context ctx) {
         super(ctx);
@@ -82,8 +86,7 @@ public class OpenGLView extends GLSurfaceView implements GLSurfaceView.Renderer 
             GPUInterface.setupTexture(textureId[0]);
             textureInterface.setUniform1i("uTexture", 0); // this is the on-gpu texture register not the texture id
 
-            cameraCapturer = new CameraCapturer();
-            onResume();
+            surfaceTextureHandler.receiveSurfaceTexture(cameraFeedSurfaceTexture);
         }
     }
 
@@ -92,16 +95,19 @@ public class OpenGLView extends GLSurfaceView implements GLSurfaceView.Renderer 
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
         GLES20.glDisable(GLES20.GL_DEPTH_TEST);
 
+        cameraFeedSurfaceTexture.updateTexImage();
+        textureInterface.select();
+        textureInterface.drawIndexedBufferedData(vbuf, ibuf, 0, "aVertex");
 
-        if(cameraCapturer.isActive()) {
-            cameraFeedSurfaceTexture.updateTexImage();
-            textureInterface.select();
-            textureInterface.drawIndexedBufferedData(vbuf, ibuf, 0, "aVertex");
-        }
+        GLES20.glEnable(GLES20.GL_DEPTH_TEST);
     }
 
     public void onSurfaceChanged(GL10 unused, int w, int h) {
         GLES20.glViewport(0, 0, w, h);
+    }
+
+    public void setSurfaceTextureHandler(OpenGLView.SurfaceTextureHandler h) {
+        this.surfaceTextureHandler = h;
     }
 
     private void createShapes() {
@@ -124,28 +130,5 @@ public class OpenGLView extends GLSurfaceView implements GLSurfaceView.Renderer 
         ibuf.put(indices);
         ibuf.position(0);
 
-    }
-
-    // copypasted from Hikar - removed fov stuff
-    public void onResume()
-    {
-        if(cameraCapturer!=null)
-        {
-
-            try
-            {
-                cameraCapturer.openCamera();
-                cameraCapturer.startPreview(cameraFeedSurfaceTexture);
-            }
-            catch(Exception e)
-            {
-                Log.e("Textures","Error getting camera preview: " + e);
-                cameraCapturer.releaseCamera();
-            }
-        }
-    }
-
-    public void onPause() {
-        cameraCapturer.releaseCamera();
     }
 }
